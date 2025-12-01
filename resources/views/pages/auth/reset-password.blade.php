@@ -1,4 +1,4 @@
-@extends('layouts.fullscreen-layout')
+@extends('layouts.fullscreen-layout', ['title' => 'Reset Password'])
 
 @section('content')
     <div class="relative z-1 bg-white p-6 sm:p-0 dark:bg-gray-900">
@@ -130,4 +130,3 @@
         </div>
     </div>
 @endsection
-

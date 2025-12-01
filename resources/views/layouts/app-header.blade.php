@@ -50,8 +50,10 @@
 
             <!-- Logo (mobile only) -->
             <a href="/" class="xl:hidden">
-                <img class="dark:hidden" src="/images/logo/logo.svg" alt="Logo" />
-                <img class="hidden dark:block" src="/images/logo/logo-dark.svg" alt="Logo" />
+                <div class="flex items-center gap-2">
+                    <img src="/images/logo/logo-icon.svg" alt="Logo" width="32" height="32" />
+                    <span class="text-2xl font-semibold text-gray-900 dark:text-white">{{ config('app.name') }}</span>
+                </div>
             </a>
 
             <!-- Application Menu Toggle (mobile only) -->
