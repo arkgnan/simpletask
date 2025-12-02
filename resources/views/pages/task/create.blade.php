@@ -40,23 +40,34 @@
                     </div>
 
                     <div class="mb-4 w-full">
-                        <x-forms.select
-                            name="status"
-                            label="Status"
-                            :options="collect($statuses)->mapWithKeys(fn($enum) => [$enum->value => ucfirst(str_replace('_', ' ', $enum->value))])->toArray()"
-                            :selected="old('status', App\Enums\TaskStatus::default()->value)"
-                            :error="$errors->first('status')"
+                        <x-forms.textarea
+                            name="description"
+                            label="Description"
+                            :value="old('description')"
+                            :error="$errors->first('description')"
                         />
                     </div>
 
-                    <div class="mb-4 w-full">
-                        <x-forms.select
-                            name="priority"
-                            label="Priority"
-                            :options="collect($priorities)->mapWithKeys(fn($enum) => [$enum->value => ucfirst($enum->value)])->toArray()"
-                            :selected="old('priority', App\Enums\TaskPriority::default()->value)"
-                            :error="$errors->first('priority')"
-                        />
+                    <div class="flex items-center justify-between mt-4 gap-3">
+                        <div class="w-full">
+                            <x-forms.select
+                                name="status"
+                                label="Status"
+                                :options="collect($statuses)->mapWithKeys(fn($enum) => [$enum->value => ucfirst(str_replace('_', ' ', $enum->value))])->toArray()"
+                                :selected="old('status', App\Enums\TaskStatus::default()->value)"
+                                :error="$errors->first('status')"
+                            />
+                        </div>
+
+                        <div class="w-full">
+                            <x-forms.select
+                                name="priority"
+                                label="Priority"
+                                :options="collect($priorities)->mapWithKeys(fn($enum) => [$enum->value => ucfirst($enum->value)])->toArray()"
+                                :selected="old('priority', App\Enums\TaskPriority::default()->value)"
+                                :error="$errors->first('priority')"
+                            />
+                        </div>
                     </div>
 
                     <div class="flex items-center justify-end mt-4 gap-3">

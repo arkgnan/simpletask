@@ -64,14 +64,25 @@
                                             Priority
                                         </p>
                                     </th>
+                                    <th class="px-5 py-3 text-left sm:px-6">
+                                        <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                                            Action
+                                        </p>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($tasks as $task)
                                     <tr class="border-b border-gray-100 dark:border-white/[0.05]">
                                         <td class="px-4 sm:px-6 py-3.5">
-                                            <span class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400 hover:bg-sky-700">
-                                                <a href="{{ route('task.show', $task->id) }}" class="hover:bg-sky-700">{{ $task->title }}</a>
+                                            <span class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400 hover:text-sky-700">
+                                                <a href="{{ route('task.show', $task->id) }}">
+                                                    @if($task->status->value == 'completed')
+                                                        <span class="text-gray-500">{{ $task->title }}</span>
+                                                    @else
+                                                        {{ $task->title }}
+                                                    @endif
+                                                    </a>
                                             </span>
                                         </td>
                                         <td class="px-4 sm:px-6 py-3.5">
@@ -79,13 +90,23 @@
                                         </td>
                                         <td class="px-4 sm:px-6 py-3.5">
                                             <div class="flex items-center gap-3">
+                                                @if($task->assignee)
                                                 <div
-                                                    class="flex items-center justify-center text-center overflow-hidden rounded-full h-10 w-10 bg-gray-200 text-black dark:bg-gray-700 dark:text-white">
-                                                    {{ $task->assignee->initials() }}
+                                                    class="flex items-center justify-center text-center overflow-hidden rounded-full h-10 w-10 bg-blue-200 dark:bg-blue-500 text-blue-500 dark:text-white">
+                                                    {{ $task->assignee?->initials() }}
                                                 </div>
                                                 <div>
-                                                    <span class="mb-0.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">{{ $task->assignee->name }}</span>
+                                                    <span class="mb-0.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">{{ $task->assignee?->name }}</span>
                                                 </div>
+                                                @else
+                                                <div
+                                                    class="flex items-center justify-center text-center overflow-hidden rounded-full h-10 w-10 bg-gray-200 text-black dark:bg-gray-700 dark:text-white">
+                                                    NA
+                                                </div>
+                                                <div>
+                                                    <span class="mb-0.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">Not Assigned</span>
+                                                </div>
+                                                @endif
                                             </div>
                                         </td>
                                         <td class="px-4 sm:px-6 py-3.5">
@@ -111,6 +132,36 @@
                                                 $colorPriorityClass = $priorityColors[$task->priority->value] ?? 'bg-gray-50 text-gray-700';
                                             @endphp
                                             <span class="text-theme-xs inline-block rounded-full px-2 py-0.5 font-medium {{ $colorPriorityClass }}">{{ ucfirst($task->priority->value) }}</span>
+                                        </td>
+                                        <td class="px-4 sm:px-6 py-3.5">
+                                            <form id="deleteTaskForm-{{ $task->id }}" action="{{ route('task.destroy', $task->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button
+                                                    type="button"
+                                                    onclick="
+                                                        Swal.fire({
+                                                            title: 'Are you sure?',
+                                                            text: 'You will not be able to revert this!',
+                                                            icon: 'warning',
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: '#DC2626',
+                                                            cancelButtonColor: '#6B7280',
+                                                            confirmButtonText: 'Yes, delete it!'
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                document.getElementById('deleteTaskForm-{{ $task->id }}').submit();
+                                                            }
+                                                        });
+                                                    "
+                                                >
+                                                    <svg class="text-gray-700 cursor-pointer size-5 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-500"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                    </svg>
+                                                </button>
+                                            </form>
+
                                         </td>
                                     </tr>
                                 @endforeach

@@ -35,8 +35,9 @@ class StoreTaskRequest extends FormRequest
                 "exists:users,name",
             ],
             "due_date" => ["required", "date"],
-            "status" => ["nullable", new Enum(TaskStatus::class)],
-            "priority" => ["nullable", new Enum(TaskPriority::class)],
+            "status" => ["required", new Enum(TaskStatus::class)],
+            "priority" => ["required", new Enum(TaskPriority::class)],
+            "description" => ["nullable", "string", "min:5"],
         ];
 
         // Apply 'after_or_equal:today' only for POST requests (new task creation)

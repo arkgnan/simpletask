@@ -1,5 +1,8 @@
 import axios from "axios";
+import Swal from "sweetalert2";
+
 window.axios = axios;
+window.Swal = Swal;
 let token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
